@@ -25,14 +25,19 @@ download.file(url = "https://projects.fivethirtyeight.com/soccer-api/internation
 WorldCup<- read.csv("WorldCup.csv")
 
 #TASK: take a look at the World Cup data. 
+str(WorldCup)
+print(WorldCup)
 
 #TASK: Install and call the dplyr package. 
+install.packages("dplyr")
+library(dplyr)
 
 #Let's make a random sample of our data and save it
 #Task: run the code below
 mysample<-sample_n(WorldCup, size=15, replace = FALSE, weight = NULL, .env = NULL)
 
 #TASK: Save the new sample as a csv file
+write.csv(mysample, file = "worldcupsample.csv", row.names = FALSE)
 
 
 #Now let's have some fun with *piping*
@@ -58,3 +63,12 @@ mysample3<-select(mysample2, Index1, Index2, team1, team2 )
 mysample4<-summary(mysample3)
 print(mysample4)
 
+piping2 <- mysample %>%
+  arrange(date) %>%
+  filter(spi1 < 80) %>%
+  rename(Index1 = spi1, Index2 = spi2) %>%
+  select(Index1, Index2, team1, team2) %>%
+  summary() %>%
+  print()
+
+# Both produce same results.
